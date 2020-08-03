@@ -5,14 +5,23 @@ class KidsController < ApplicationController
     render json: { kids: @kids }
   end
 
+  def new
+    @kid = Kid.new
+  end
+
   def create
-    @kid = Kid.create({
+    @kid = Kid.new({
       username: params[:kid][:username],
       description: params[:kid][:description],
       favorite_color: params[:kid][:favorite_color],
       age: params[:kid][:age],
     })
 
-    render json: { kid: @kid }
+    if @kid.save
+      render json: { kid: @kid }
+    else
+      render :new
+    end
+
   end
 end
